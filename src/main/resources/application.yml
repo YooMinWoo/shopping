@@ -1,0 +1,40 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/shopping?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username: root
+    password: localhost
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+  #  http:
+  #    encoding:
+  #      enabled: true
+  #      charset: UTF-8
+  #      force: true
+
+  jwt:
+    secret: asdfasdfasdfasdfasdfasdfqwqweqwerraasdfergghrqfqegrghs
+
+#
+#  web:
+#    resource:
+#      add-mappings: false
+
+mybatis:
+  mapper-locations: classpath:mappers/*.xml
+
+server:
+  port: 8080
+  servlet:
+    encoding:
+      force-response=true:
+#      charset: UTF-8
