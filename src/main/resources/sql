@@ -1,0 +1,54 @@
+CREATE TABLE `user` (
+   `id` bigint NOT NULL AUTO_INCREMENT,
+   `username` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
+   `password` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
+   `name` varchar(255) COLLATE utf8mb3_bin NOT NULL,
+   `role` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
+   `create_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+   `update_date` timestamp NULL DEFAULT NULL,
+   PRIMARY KEY (`id`),
+   UNIQUE KEY `UKsb8bbouer5wak8vyiiy4pf2bx` (`username`)
+ ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin
+
+
+CREATE TABLE `category` (
+   `id` int NOT NULL AUTO_INCREMENT,
+   `name` varchar(255) COLLATE utf8mb3_bin NOT NULL,
+   `create_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+   `update_date` timestamp NULL DEFAULT NULL,
+   PRIMARY KEY (`id`),
+   UNIQUE KEY `name_UNIQUE` (`name`)
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin
+
+
+CREATE TABLE `shopping`.`item` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `category_id` INT NOT NULL,
+  `name` VARCHAR(255) NOT NULL,
+  `price` VARCHAR(255) NOT NULL,
+  `count` INT NOT NULL,
+  `content` VARCHAR(1000) NOT NULL,
+  `create_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `update_date` TIMESTAMP NULL,
+  PRIMARY KEY (`id`),
+  INDEX `item_category_fk_idx` (`category_id` ASC) VISIBLE,
+  CONSTRAINT `item_category_fk`
+    FOREIGN KEY (`category_id`)
+    REFERENCES `shopping`.`category` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_bin;
+
+
+CREATE TABLE `file` (
+   `id` int NOT NULL AUTO_INCREMENT,
+   `item_id` int NOT NULL,
+   `uuid` varchar(255) COLLATE utf8mb3_bin NOT NULL,
+   `name` varchar(255) COLLATE utf8mb3_bin NOT NULL,
+   `create_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+   PRIMARY KEY (`id`),
+   KEY `file_item_fk_idx` (`item_id`),
+   CONSTRAINT `file_item_fk` FOREIGN KEY (`item_id`) REFERENCES `item` (`id`)
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin

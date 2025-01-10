@@ -36,11 +36,11 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
 
         // 클라이언트 요청에서 username(회원 아이디), password 추출
-        String username = request.getParameter("mobile");
-        String verification = username + " " + request.getParameter("verification");
+        String username = request.getParameter("id");
+        String password = request.getParameter("password");
 
         // 검증을 위해 token에 담음
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username,verification);
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username,password);
 
         // token에 담은 검증을 위한 AuthenticationManager로 전달
         return authenticationManager.authenticate(authenticationToken);

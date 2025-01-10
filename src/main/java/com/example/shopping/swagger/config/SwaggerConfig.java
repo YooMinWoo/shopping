@@ -12,20 +12,20 @@ import org.springframework.context.annotation.Configuration;
 public class SwaggerConfig {
     @Bean
     public OpenAPI openAPI() {
-        String jwt = "JWT";
-        SecurityRequirement securityRequirement = new SecurityRequirement().addList(jwt);
-        Components components = new Components().addSecuritySchemes(jwt, new SecurityScheme()
-                .name(jwt)
-                .type(SecurityScheme.Type.HTTP)
-                .scheme("bearer")
-                .bearerFormat("JWT")
+        String accessTokenHeader = "access"; // 헤더 이름 설정
+        SecurityRequirement securityRequirement = new SecurityRequirement().addList(accessTokenHeader);
+        Components components = new Components().addSecuritySchemes(accessTokenHeader, new SecurityScheme()
+                .name(accessTokenHeader)
+                .type(SecurityScheme.Type.APIKEY) // API 키 형식
+                .in(SecurityScheme.In.HEADER) // 헤더에서 추출
         );
+
         return new OpenAPI()
-                .components(new Components())
+                .components(components)
                 .info(apiInfo())
-                .addSecurityItem(securityRequirement)
-                .components(components);
+                .addSecurityItem(securityRequirement);
     }
+
     private Info apiInfo() {
         return new Info()
                 .title("API Test") // API의 제목

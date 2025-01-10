@@ -84,7 +84,6 @@ public class SecurityConfig {
                         .accessDeniedHandler(accessDeniedHandler)
                         .authenticationEntryPoint(authenticationEntryPoint)
                 )
-
         ;
 
         return http.build();

@@ -2,9 +2,7 @@ package com.example.shopping.user.entity;
 
 import com.example.shopping.user.dto.Role;
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
@@ -13,9 +11,12 @@ import java.util.Date;
 
 @Getter
 @Setter
+@Builder
 @Entity
-//@Table
+@AllArgsConstructor
 public class User {
+    public User() {
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,4 +39,5 @@ public class User {
 
     @UpdateTimestamp
     private Date update_date;
+
 }

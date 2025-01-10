@@ -8,27 +8,26 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
 public class CustomAuthenticationProvider implements AuthenticationProvider {
 
+    private final PasswordEncoder passwordEncoder;
     private final UserDetailsService userDetailsService;
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        String mobile = authentication.getName();
-        String verification = authentication.getCredentials().toString();
+        String username = authentication.getName();
+        String password = authentication.getCredentials().toString();
 
-        UserDetails user = userDetailsService.loadUserByUsername(mobile);
+        UserDetails user = userDetailsService.loadUserByUsername(username);
 
-        if(user.getPassword() == null){
-            throw new BadCredentialsException("인증번호를 먼저 발급받아주세요.");
-        }
-        // 평문 비교
-        else if (!user.getPassword().equals(verification)) {
-            throw new BadCredentialsException("인증번호가 틀렸습니다.");
+        // 비밀번호 검증
+        if (!passwordEncoder.matches(password, user.getPassword())) {
+            throw new BadCredentialsException("Invalid password");
         }
 
         return new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
