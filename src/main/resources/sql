@@ -45,8 +45,11 @@ COLLATE = utf8_bin;
 CREATE TABLE `file` (
    `id` int NOT NULL AUTO_INCREMENT,
    `item_id` int NOT NULL,
-   `uuid` varchar(255) COLLATE utf8mb3_bin NOT NULL,
-   `name` varchar(255) COLLATE utf8mb3_bin NOT NULL,
+   `original_name` varchar(255) COLLATE utf8mb3_bin NOT NULL,
+   `stored_name` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
+   `file_path` varchar(500) COLLATE utf8mb3_bin NOT NULL,
+   `content_type` varchar(100) COLLATE utf8mb3_bin NOT NULL,
+   `size` bigint NOT NULL,
    `create_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
    PRIMARY KEY (`id`),
    KEY `file_item_fk_idx` (`item_id`),

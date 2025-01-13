@@ -32,7 +32,7 @@ public class Item {
     private Long count;
     private String content;
 
-    @OneToMany(mappedBy = "file", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "item", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<File> files;
 
     @CreationTimestamp
@@ -41,4 +41,10 @@ public class Item {
     @UpdateTimestamp
     private Date update_date;
 
+    public void addImages(List<File> files) {
+        for(File file : files){
+            file.setItem(this);
+        }
+        this.files = files;
+    }
 }

@@ -16,6 +16,8 @@ import java.util.Date;
 @Entity
 @AllArgsConstructor
 public class File {
+    public File() {
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,9 +27,15 @@ public class File {
     @JoinColumn(name = "item_id")
     private Item item;
 
-    private String uuid;
+    private String original_name;
 
-    private String name;
+    private String stored_name;
+
+    private String file_path;
+
+    private String content_type;
+
+    private Long size;
 
     @CreationTimestamp
     private Date create_date;

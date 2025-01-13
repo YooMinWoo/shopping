@@ -11,33 +11,46 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class FileService {
-    private final String FILE_DIRECTORY = "C:\\Users\\CODELINE\\Desktop\\tmp\\test\\";
-    private final FileRepository fileRepository; // 파일 관련 DB 작업
+    public static final String FILE_DIRECTORY = "C:\\Users\\CODELINE\\Desktop\\tmp\\test\\";
 
-    public String saveFileToLocal(MultipartFile image) {
-        String fileName = UUID.randomUUID().toString();
-        Path path = Paths.get(FILE_DIRECTORY + fileName);
+    public List<File> saveFiles(List<MultipartFile> images) {
+        List<File> files = new ArrayList<>();
 
-        try {
-            image.transferTo(path.toFile());           // 파일 저장
-        } catch (IOException e) {
-            throw new RuntimeException("파일 저장 중 오류 발생", e);
+        for (MultipartFile image : images) {
+            try {
+                // 1. 파일 저장 이름 및 경로 생성
+                String originalName = image.getOriginalFilename();
+                String extension = originalName.substring(originalName.lastIndexOf("."));
+                String storedName = UUID.randomUUID().toString() + extension;
+                Path filePath = Paths.get(FILE_DIRECTORY, storedName);
+
+                // 2. 로컬에 파일 저장
+                Files.createDirectories(filePath.getParent());
+                image.transferTo(filePath.toFile());
+
+                // 3. File 엔티티 생성
+                File file = File.builder()
+                        .original_name(originalName)
+                        .stored_name(storedName)
+                        .file_path(filePath.toString())
+                        .content_type(image.getContentType())
+                        .size(image.getSize())
+                        .build();
+
+                files.add(file);
+
+            } catch (IOException e) {
+                throw new RuntimeException("파일 저장 중 오류 발생: " + e.getMessage(), e);
+            }
         }
 
-        return fileName; // 저장된 파일 이름 반환
-    }
-
-    public void saveFileToDatabase(String fileName, Item item) {
-        File fileEntity = File.builder()
-                .fileName(fileName)
-                .filePath(FILE_DIRECTORY + fileName)
-                .item(item) // 파일과 아이템 연관
-                .build();
-        fileRepository.save(fileEntity); // 파일 정보 DB 저장
+        return files;
     }
 }

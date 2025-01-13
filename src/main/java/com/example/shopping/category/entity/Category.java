@@ -17,6 +17,8 @@ import java.util.Date;
 @Entity
 @AllArgsConstructor
 public class Category {
+    public Category() {
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
